@@ -1,5 +1,5 @@
 ### Twitter Trigger App (server)
-Lalalalala
+Simple Twitter + node.js app
 
 #### Dependencies:
 - node.js
