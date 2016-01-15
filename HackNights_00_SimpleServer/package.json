@@ -1,0 +1,18 @@
+{
+  "name": "hacknights_api_simpleserver",
+  "version": "0.0.1",
+  "description": "simple server using node.js",
+  "main": "serve.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hacklabes/HackNights_API_Trigger.git"
+  },
+  "author": "Thiago Hersan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
