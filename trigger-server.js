@@ -16,21 +16,28 @@ var flutter = new Flutter({
         var accessToken = req.session.oauthAccessToken;
         var secret = req.session.oauthAccessTokenSecret;
 
-        // Redirect user back to your app 
-        res.redirect('bang.html');
+        // TODO: log into twitter
+
+        // Enable serving the app front-end
+        app.get('/bang', function(req, res){
+            res.sendfile("front-end/bang.html");
+        });
+
+        // and redirect user there, now that they are logged in
+        res.redirect('/bang');
     }
 });
 
 var app = express();
-app.use(session({secret: 'foo'}));
-app.use(express.static('front-end'));
+app.use(session({secret: 'bangbangbang'}));
+
+// serve login.html at /
+app.get('/', function(req, res){
+    res.sendfile("front-end/login.html");
+});
 
 app.get('/connect', flutter.connect);
 app.get('/callback', flutter.auth);
-
-app.get('/', function (req, res) {
-    res.redirect('login.html');
-});
 
 // Direct users to /connect to initiate oauth flow.
 app.listen(8080, function(){});
