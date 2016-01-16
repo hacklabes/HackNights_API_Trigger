@@ -1,10 +1,43 @@
 <html>
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>HackNights Twitter API Trigger App</title>
+    <style media="screen" type="text/css">
+        #container {
+            font-family: "Helvetica Neue";
+            margin: auto;
+            width:50%;
+        }
+        #introtext {
+            padding:10px;
+        }
+    </style>
+
+    <script>
+        function checkTweet(){
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    var responseJson = JSON.parse(xmlHttp.responseText);
+                    document.getElementById("tweet").innerHTML = responseJson.text;
+                    document.getElementById("from").innerHTML = responseJson.user.name;
+                }
+            }
+            xmlHttp.open("GET", './tweet', true);
+            xmlHttp.send(null);
+
+            setTimeout(checkTweet, 6000);
+        }
+
+        window.onload = checkTweet();
+    </script>
 </head>
 
 <body>
-	<div id='myCanvas'></div>
-    <p>Welcome. Way to be logged in.</p>
+    <div id="container">
+        <div id="introtext">This tweet just came in (BANG !!) </div>
+        <div id="tweet"></div>
+        <div id="from"></div>
+    </div>
 </body>
 </html>
