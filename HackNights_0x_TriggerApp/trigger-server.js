@@ -21,7 +21,7 @@ var flutter = new Flutter({
 
         // Enable serving the app front-end
         app.get('/bang', function(req, res){
-            res.sendfile("front-end/bang.html");
+            res.sendFile("front-end/bang.html", {root:'./'});
         });
 
         // and redirect user there, now that they are logged in
@@ -34,7 +34,7 @@ app.use(session({secret: 'bangbangbang'}));
 
 // serve login.html at /
 app.get('/', function(req, res){
-    res.sendfile("front-end/login.html");
+    res.sendFile("front-end/login.html", {root:'./'});
 });
 
 app.get('/connect', flutter.connect);
