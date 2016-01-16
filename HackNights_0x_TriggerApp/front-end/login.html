@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Trigger App Twitter Login</title>
+    <title>HackNights Twitter API Trigger App Login</title>
     <style media="screen" type="text/css">
         #container {
             font-family: "Helvetica Neue";
@@ -11,9 +11,8 @@
         #introtext {
             padding:10px;
         }
-        #login a {
-            color: #fff;
-            text-decoration: none;
+        #login {
+            cursor: pointer;
         }
         .button {
             margin: auto;
@@ -35,8 +34,9 @@
 
 <body>
     <div id="container">
-        <div id="introtext">Welcome to my app. Click below to start.</div>
-        <div id="login" class="button"><a href="connect">START</a></div>
+        <div id="introtext">Welcome to the HackNights Twitter API Trigger app.<br>
+            BANG !! </div>
+        <div id="login" class="button" onclick="document.location='connect'">START</div>
     </div>
 </body>
 </html>
