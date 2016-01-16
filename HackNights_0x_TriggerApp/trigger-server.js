@@ -20,6 +20,7 @@ var flutter = new Flutter({
     consumerSecret: keys['CONSUMER_SECRET'],
     loginCallback: 'http://127.0.0.1:8080/callback',
 
+    // called eventually once user is logged in
     authCallback: function(req, res, next) {
         if (req.error) {
             console.log(req.error);
@@ -37,8 +38,11 @@ var flutter = new Flutter({
         });
 
         // get user name
-        tClient.get('account/settings', function(err, response){
-            // TODO: check for error
+        tClient.get('account/settings', function(error, response){
+            if(error){
+                return;
+            }
+
             // set up a stream and track tweets that mention me
             tClient.stream('statuses/filter', {track: '@'+response.screen_name},  function(stream){
                 stream.on('data', function(tweet) {
