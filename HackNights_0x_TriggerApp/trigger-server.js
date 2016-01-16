@@ -1,7 +1,10 @@
 var express = require('express');
 var session = require('express-session');
 var Flutter = require('flutter');
+var Twitter = require('twitter');
 var keys = require('./oauth.json');
+
+var lastTweet = ""
 
 var flutter = new Flutter({
     cache: false,
@@ -15,9 +18,32 @@ var flutter = new Flutter({
             return;
         }
         var accessToken = req.session.oauthAccessToken;
-        var secret = req.session.oauthAccessTokenSecret;
+        var accessTokenSecret = req.session.oauthAccessTokenSecret;
 
-        // TODO: log into twitter
+        // get a twitter client
+        var tClient = new Twitter({
+            consumer_key: keys['CONSUMER_KEY'],
+            consumer_secret: keys['CONSUMER_SECRET'],
+            access_token_key: accessToken,
+            access_token_secret: accessTokenSecret
+        });
+
+        // set up a stream and track tweets that mention me
+        tClient.stream('statuses/filter', {track: '@thiagohersan'},  function(stream){
+            stream.on('data', function(tweet) {
+                console.log(tweet.text);
+                lastTweet = tweet;
+            });
+
+            stream.on('error', function(error) {
+                console.log(error);
+            });
+        });
+
+        // Enable the tweet endpoint
+        app.get('/tweet', function(req, res){
+            res.send(lastTweet);
+        });
 
         // Enable serving the app front-end
         app.get('/bang', function(req, res){
