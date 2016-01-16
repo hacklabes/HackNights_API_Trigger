@@ -4,7 +4,15 @@ var Flutter = require('flutter');
 var Twitter = require('twitter');
 var keys = require('./oauth.json');
 
+var app = express();
+app.use(session({secret: 'bangbangbang'}));
+
 var lastTweet = ""
+
+// serve login.html at /
+app.get('/', function(req, res){
+    res.sendFile("front-end/login.html", {root:'./'});
+});
 
 var flutter = new Flutter({
     cache: false,
@@ -28,6 +36,12 @@ var flutter = new Flutter({
             access_token_secret: accessTokenSecret
         });
 
+        // get user name
+        tClient.get('account/settings', function(err, response){
+            console.log(response.screen_name);
+        });
+
+        /*
         // set up a stream and track tweets that mention me
         tClient.stream('statuses/filter', {track: '@thiagohersan'},  function(stream){
             stream.on('data', function(tweet) {
@@ -39,6 +53,7 @@ var flutter = new Flutter({
                 console.log(error);
             });
         });
+        */
 
         // Enable the tweet endpoint
         app.get('/tweet', function(req, res){
@@ -53,14 +68,6 @@ var flutter = new Flutter({
         // and redirect user there, now that they are logged in
         res.redirect('/bang');
     }
-});
-
-var app = express();
-app.use(session({secret: 'bangbangbang'}));
-
-// serve login.html at /
-app.get('/', function(req, res){
-    res.sendFile("front-end/login.html", {root:'./'});
 });
 
 app.get('/connect', flutter.connect);
