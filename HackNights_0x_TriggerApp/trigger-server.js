@@ -1,11 +1,12 @@
 var express = require('express');
 var session = require('express-session');
 var Flutter = require('flutter');
+var keys = require('./oauth.json');
 
 var flutter = new Flutter({
     cache: false,
-    consumerKey: 'sCUoTw2btSMsiaeTIkrSK8JvP',
-    consumerSecret: 'wF1dYmz3ca34JjUh7rpHAJ6m6PrAxhw6IYeyYVmimv9K1lUKm8',
+    consumerKey: keys['CONSUMER_KEY'],
+    consumerSecret: keys['CONSUMER_SECRET'],
     loginCallback: 'http://127.0.0.1:8080/callback',
 
     authCallback: function(req, res, next) {
