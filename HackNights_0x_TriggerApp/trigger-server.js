@@ -38,22 +38,19 @@ var flutter = new Flutter({
 
         // get user name
         tClient.get('account/settings', function(err, response){
-            console.log(response.screen_name);
-        });
+            // TODO: check for error
+            // set up a stream and track tweets that mention me
+            tClient.stream('statuses/filter', {track: '@'+response.screen_name},  function(stream){
+                stream.on('data', function(tweet) {
+                    console.log(tweet.text);
+                    lastTweet = tweet;
+                });
 
-        /*
-        // set up a stream and track tweets that mention me
-        tClient.stream('statuses/filter', {track: '@thiagohersan'},  function(stream){
-            stream.on('data', function(tweet) {
-                console.log(tweet.text);
-                lastTweet = tweet;
-            });
-
-            stream.on('error', function(error) {
-                console.log(error);
+                stream.on('error', function(error) {
+                    console.log(error);
+                });
             });
         });
-        */
 
         // Enable the tweet endpoint
         app.get('/tweet', function(req, res){
