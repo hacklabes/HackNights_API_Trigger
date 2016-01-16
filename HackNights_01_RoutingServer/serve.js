@@ -12,7 +12,7 @@ app.get('/cat', function(req, res){
         // grab a random image and check if file name starts with 'cat'
         fName = imageFiles[Math.floor(Math.random()*imageFiles.length)];
     }
-    res.sendfile('images/'+fName);
+    res.sendFile('images/'+fName, {root:'./'});
 });
 
 app.listen(8080, function(){});
