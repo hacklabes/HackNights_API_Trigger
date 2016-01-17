@@ -1,0 +1,21 @@
+{
+  "name": "hacknights_api_triggerpost",
+  "version": "0.0.1",
+  "description": "twitter trigger app",
+  "main": "trigger-server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository" : {
+      "type" : "git",
+      "url" : "https://github.com/hacklabes/HackNights_API_Trigger.git"
+  },
+  "author": "Thiago Hersan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-session": "^1.13.0",
+    "flutter": "0.0.5",
+    "twitter": "^1.2.5"
+  }
+}

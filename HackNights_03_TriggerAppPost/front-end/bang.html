@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HackNights Twitter API Trigger App</title>
+    <style media="screen" type="text/css">
+        #container {
+            font-family: "Helvetica Neue";
+            margin: auto;
+            width:50%;
+        }
+        #introtext {
+            padding:10px;
+        }
+    </style>
+
+    <script>
+        var lastId = "";
+        function checkTweet(){
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    if(!xmlHttp.responseText){
+                        return;
+                    }
+                    var responseJson = JSON.parse(xmlHttp.responseText);
+                    if(lastId != responseJson.id_str){
+                        document.getElementById("tweet").innerHTML = responseJson.text;
+                        document.getElementById("from").innerHTML = responseJson.user.name;
+                        lastId = responseJson.id_str;
+                        // take pictures
+                        document.getElementById("canvas")
+                            .getContext("2d")
+                            .drawImage(video, 0, 0, 640, 480);
+
+                        // get url version
+                        var dataURL = document.getElementById("canvas").toDataURL("image/png");
+                    }
+                }
+            }
+            xmlHttp.open("GET", './tweet', true);
+            xmlHttp.send(null);
+
+            setTimeout(checkTweet, 6000);
+        }
+
+        window.onload = checkTweet();
+    </script>
+    <script src="video.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="introtext">This tweet just came in (BANG !!) </div>
+        <div id="tweet"></div>
+        <div id="from"></div>
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <video id="video" width="640" height="480" hidden></video>
+    </div>
+</body>
+</html>
