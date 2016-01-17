@@ -5,5 +5,6 @@ Simple Twitter + node.js app
 - node.js
 - express
 - express-session
+- multer
 - flutter
 - twitter
