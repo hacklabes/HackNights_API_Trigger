@@ -25,3 +25,14 @@ window.addEventListener("DOMContentLoaded", function() {
 		}, errBack);
 	}
 }, false);
+
+function sendMultipart(mpdata){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", './post', true);
+    xmlHttp.setRequestHeader("content-type", "multipart/form-data; charset=utf-8; boundary=0xbeef");
+    var multipart = '--0xbeef\r\n';
+    multipart += 'Content-Disposition: form-data; name="dataurl"\r\n\r\n';
+    multipart += mpdata+'\r\n';
+    multipart += '--0xbeef--';
+    xmlHttp.send(multipart);
+}

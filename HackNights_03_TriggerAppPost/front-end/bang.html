@@ -28,12 +28,14 @@
                         document.getElementById("from").innerHTML = responseJson.user.name;
                         lastId = responseJson.id_str;
                         // take pictures
-                        document.getElementById("canvas")
-                            .getContext("2d")
-                            .drawImage(video, 0, 0, 640, 480);
+                        var dataURL = "";
+                        while(dataURL.length < 9000){
+                            document.getElementById("canvas").getContext("2d").drawImage(video, 0, 0, 640, 480);
 
-                        // get url version
-                        var dataURL = document.getElementById("canvas").toDataURL("image/png");
+                            // get url version
+                            dataURL = document.getElementById("canvas").toDataURL("image/jpeg", 0.8);
+                        }
+                        sendMultipart(dataURL.substr(23));
                     }
                 }
             }
@@ -45,7 +47,7 @@
 
         window.onload = checkTweet();
     </script>
-    <script src="video.js"></script>
+    <script src="utils.js"></script>
 </head>
 
 <body>

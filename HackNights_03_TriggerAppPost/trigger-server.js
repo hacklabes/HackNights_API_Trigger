@@ -1,11 +1,14 @@
 var express = require('express');
 var session = require('express-session');
+var multer = require('multer');
 var Flutter = require('flutter');
 var Twitter = require('twitter');
 var keys = require('./oauth.json');
 
 var app = express();
 app.use(session({secret: 'bangbangbang'}));
+
+var upload = multer();
 
 var lastTweet = ""
 
@@ -56,17 +59,31 @@ var flutter = new Flutter({
             });
         });
 
-        // Enable the tweet endpoint
+        // Enable the tweet endpoints
         app.get('/tweet', function(req, res){
             res.send(lastTweet);
+        });
+        app.post('/post', upload.single(), function(req, res){
+            if(req.body.dataurl.length > 10000){
+                tClient.post('media/upload', {media_data: req.body.dataurl}, function (error, media, response) {
+                    if (!error) {
+                        // Lets tweet it
+                        var status = {
+                            status: ' ',
+                            media_ids: media.media_id_string
+                        }
+                        tClient.post('statuses/update', status, function(){});
+                    }
+                });
+            }
         });
 
         // Enable serving the app front-end
         app.get('/bang.html', function(req, res){
             res.sendFile("front-end/bang.html", {root:'./'});
         });
-        app.get('/video.js', function(req, res){
-            res.sendFile("front-end/video.js", {root:'./'});
+        app.get('/utils.js', function(req, res){
+            res.sendFile("front-end/utils.js", {root:'./'});
         });
 
         // and redirect user there, now that they are logged in
@@ -75,8 +92,7 @@ var flutter = new Flutter({
         /* 1337 H4X0r version: serve all .html and .js in front-end/
         app.get(/^(.*).(html|js)/, function(req, res){
             res.sendFile("front-end/"+req.params[0]+"."+req.params[1], {root:'./'});
-        });
-        */
+        }); */
     }
 });
 
