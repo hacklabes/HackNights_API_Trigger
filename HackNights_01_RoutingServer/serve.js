@@ -1,3 +1,5 @@
+var port = process.env.PORT || 8080;
+
 var express = require('express');
 var fs = require('fs');
 
@@ -15,4 +17,4 @@ app.get('/cat', function(req, res){
     res.sendFile('images/'+fName, {root:'./'});
 });
 
-app.listen(8080, function(){});
+app.listen(port, function(){});
