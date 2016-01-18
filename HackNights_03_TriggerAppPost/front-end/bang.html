@@ -6,10 +6,20 @@
         #container {
             font-family: "Helvetica Neue";
             margin: auto;
-            width:50%;
+            width: 33.33%;
         }
         #introtext {
-            padding:10px;
+            padding: 10px 0px 10px 0px;
+        }
+        .tweet{
+            font-size: medium;
+        }
+        .from{
+            font-size: large;
+            color: #990000;
+            text-align: right;
+            font-weight: 500;
+            padding: 0px 0px 10px 0px;
         }
     </style>
 
@@ -24,8 +34,8 @@
                     }
                     var responseJson = JSON.parse(xmlHttp.responseText);
                     if(lastId != responseJson.id_str){
-                        document.getElementById("tweet").innerHTML = responseJson.text;
-                        document.getElementById("from").innerHTML = responseJson.user.name;
+                        document.getElementById("tweet0").innerHTML = responseJson.text;
+                        document.getElementById("from0").innerHTML = responseJson.user.name;
                         lastId = responseJson.id_str;
                         // take pictures
                         var dataURL = "";
@@ -53,9 +63,9 @@
 <body>
     <div id="container">
         <div id="introtext">This tweet just came in (BANG !!) </div>
-        <div id="tweet"></div>
-        <div id="from"></div>
         <canvas id="canvas" width="640" height="480"></canvas>
+        <div id="tweet0" class="tweet"></div>
+        <div id="from0" class="from"></div>
         <video id="video" width="640" height="480" hidden></video>
     </div>
 </body>

@@ -6,21 +6,53 @@
         #container {
             font-family: "Helvetica Neue";
             margin: auto;
-            width:50%;
+            width: 33.33%;
         }
         #introtext {
-            padding:10px;
+            padding: 10px 0px 10px 0px;
+        }
+        .tweet{
+            font-size: medium;
+        }
+        .from{
+            font-size: large;
+            color: #990000;
+            text-align: right;
+            font-weight: 500;
+            padding: 0px 0px 10px 0px;
         }
     </style>
 
     <script>
+        var tweetCount = 0;
+        var lastId = '';
         function checkTweet(){
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.onreadystatechange = function() {
                 if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                    if(!xmlHttp.responseText){
+                        return;
+                    }
                     var responseJson = JSON.parse(xmlHttp.responseText);
-                    document.getElementById("tweet").innerHTML = responseJson.text;
-                    document.getElementById("from").innerHTML = responseJson.user.name;
+                    if(lastId != responseJson.id_str){
+                        // got a new tweet, create new divs
+                        var tDiv = document.createElement('div');
+                        tDiv.id = 'tweet'+tweetCount;
+                        tDiv.className = 'tweet';
+                        var fDiv = document.createElement('div');
+                        fDiv.id = 'from'+tweetCount;
+                        fDiv.className = 'from';
+
+                        // add divs to html
+                        document.getElementById('container').appendChild(tDiv);
+                        document.getElementById('container').appendChild(fDiv);
+
+                        // add text to html
+                        document.getElementById("tweet"+tweetCount).innerHTML = responseJson.text;
+                        document.getElementById("from"+tweetCount).innerHTML = responseJson.user.name;
+                        tweetCount += 1;
+                        lastId = responseJson.id_str;
+                    }
                 }
             }
             xmlHttp.open("GET", './tweet', true);
@@ -36,8 +68,6 @@
 <body>
     <div id="container">
         <div id="introtext">This tweet just came in (BANG !!) </div>
-        <div id="tweet"></div>
-        <div id="from"></div>
     </div>
 </body>
 </html>
