@@ -38,7 +38,7 @@ var flutter = new Flutter({
         };
 
         // get a twitter client
-        var tClient = new Twitter({
+        userInfo[req.sessionID].tClient = new Twitter({
             consumer_key: keys['CONSUMER_KEY'],
             consumer_secret: keys['CONSUMER_SECRET'],
             access_token_key: req.session.oauthAccessToken,
@@ -46,14 +46,14 @@ var flutter = new Flutter({
         });
 
         // get user name
-        tClient.get('account/settings', function(error, response){
+        userInfo[req.sessionID].tClient.get('account/settings', function(error, response){
             if(error){
                 return;
             }
             userInfo[req.sessionID].screen_name = response.screen_name;
 
             // set up a stream and track tweets that mention me
-            tClient.stream('statuses/filter', {track: '@'+response.screen_name},  function(stream){
+            userInfo[req.sessionID].tClient.stream('statuses/filter', {track: '@'+response.screen_name}, function(stream){
                 stream.on('data', function(tweet) {
                     console.log(tweet.text);
                     userInfo[req.sessionID].lastTweet = tweet;
@@ -71,7 +71,7 @@ var flutter = new Flutter({
         });
         app.post('/post', upload.single(), function(req, res){
             if(req.body.dataurl.length > 10000){
-                tClient.post('media/upload', {media_data: req.body.dataurl}, function (error, media, response) {
+                userInfo[req.sessionID].tClient.post('media/upload',{media_data: req.body.dataurl}, function (error, media, response) {
                     if (!error) {
                         // Tweet it
                         var status = {
@@ -80,7 +80,7 @@ var flutter = new Flutter({
                         }
                         // prevents posting this image many times
                         req.body.dataurl = '';
-                        tClient.post('statuses/update', status, function(){});
+                        userInfo[req.sessionID].tClient.post('statuses/update', status, function(){});
                     }
                 });
             }
