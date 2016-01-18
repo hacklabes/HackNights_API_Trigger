@@ -5,14 +5,15 @@ var Twitter = require('twitter');
 var keys = require('./oauth.json');
 
 var app = express();
-app.use(session({secret: 'bangbangbang'}));
-
-var lastTweet = ""
+app.use(session({resave:true, saveUninitialized:false, secret:'bangbangbang'}));
 
 // serve login.html at /
 app.get('/', function(req, res){
     res.sendFile("front-end/login.html", {root:'./'});
 });
+
+// this is to keep track of separate users' names and tweets
+var userInfo = {};
 
 var flutter = new Flutter({
     cache: false,
@@ -26,15 +27,19 @@ var flutter = new Flutter({
             console.log(req.error);
             return;
         }
-        var accessToken = req.session.oauthAccessToken;
-        var accessTokenSecret = req.session.oauthAccessTokenSecret;
+
+        // initialize the session information
+        userInfo[req.sessionID] = {
+            screen_name: '',
+            lastTweet: ''
+        };
 
         // get a twitter client
         var tClient = new Twitter({
             consumer_key: keys['CONSUMER_KEY'],
             consumer_secret: keys['CONSUMER_SECRET'],
-            access_token_key: accessToken,
-            access_token_secret: accessTokenSecret
+            access_token_key: req.session.oauthAccessToken,
+            access_token_secret: req.session.oauthAccessTokenSecret
         });
 
         // get user name
@@ -42,12 +47,13 @@ var flutter = new Flutter({
             if(error){
                 return;
             }
+            userInfo[req.sessionID].screen_name = response.screen_name;
 
             // set up a stream and track tweets that mention me
             tClient.stream('statuses/filter', {track: '@'+response.screen_name},  function(stream){
                 stream.on('data', function(tweet) {
                     console.log(tweet.text);
-                    lastTweet = tweet;
+                    userInfo[req.sessionID].lastTweet = tweet;
                 });
 
                 stream.on('error', function(error) {
@@ -58,7 +64,7 @@ var flutter = new Flutter({
 
         // Enable the tweet endpoint
         app.get('/tweet', function(req, res){
-            res.send(lastTweet);
+            res.send(userInfo[req.sessionID].lastTweet);
         });
 
         // Enable serving the app front-end
