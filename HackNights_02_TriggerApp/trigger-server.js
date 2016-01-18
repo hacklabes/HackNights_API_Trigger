@@ -68,12 +68,12 @@ var flutter = new Flutter({
         });
 
         // Enable serving the app front-end
-        app.get('/bang', function(req, res){
+        app.get('/bang.html', function(req, res){
             res.sendFile("front-end/bang.html", {root:'./'});
         });
 
         // and redirect user there, now that they are logged in
-        res.redirect('/bang');
+        res.redirect('/bang.html');
     }
 });
 
