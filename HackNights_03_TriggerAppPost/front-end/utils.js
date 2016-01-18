@@ -18,8 +18,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		navigator.webkitGetUserMedia(videoObj, function(stream){
 			video.src = window.URL.createObjectURL(stream);
 		}, errBack);
-	}
-	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+	} else if(navigator.mozGetUserMedia) { // Firefox-prefixed
 		navigator.mozGetUserMedia(videoObj, function(stream){
 			video.src = window.URL.createObjectURL(stream);
 		}, errBack);
