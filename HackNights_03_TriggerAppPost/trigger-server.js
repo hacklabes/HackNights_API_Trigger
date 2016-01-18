@@ -67,15 +67,18 @@ var flutter = new Flutter({
             if(req.body.dataurl.length > 10000){
                 tClient.post('media/upload', {media_data: req.body.dataurl}, function (error, media, response) {
                     if (!error) {
-                        // Lets tweet it
+                        // Tweet it
                         var status = {
-                            status: ' ',
+                            status: '@'+lastTweet.user.screen_name,
                             media_ids: media.media_id_string
                         }
+                        // prevents posting this image many times
+                        req.body.dataurl = '';
                         tClient.post('statuses/update', status, function(){});
                     }
                 });
             }
+            res.sendStatus(200);
         });
 
         // Enable serving the app front-end
