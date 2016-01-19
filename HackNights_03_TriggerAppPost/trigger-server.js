@@ -111,4 +111,4 @@ app.get('/connect', flutter.connect);
 app.get('/callback', flutter.auth);
 
 // Direct users to /connect to initiate oauth flow.
-app.listen(port, function(){});
+app.listen(port);

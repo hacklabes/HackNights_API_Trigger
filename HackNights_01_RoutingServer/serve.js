@@ -17,4 +17,4 @@ app.get('/cat', function(req, res){
     res.sendFile('images/'+fName, {root:'./'});
 });
 
-app.listen(port, function(){});
+app.listen(port);
