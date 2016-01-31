@@ -1,7 +1,7 @@
 {
   "name": "hacknights_api_routingserver",
   "version": "0.0.1",
-  "description": "simple routing server using node.js",
+  "description": "simple routing server using node.js and express",
   "main": "serve.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

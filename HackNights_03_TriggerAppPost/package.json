@@ -1,7 +1,7 @@
 {
   "name": "hacknights_api_triggerpost",
   "version": "0.0.1",
-  "description": "twitter trigger app",
+  "description": "twitter trigger app for posting",
   "main": "trigger-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
